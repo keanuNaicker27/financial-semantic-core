@@ -1,0 +1,22 @@
+name: 'financial_semantic_core'
+version: '1.0.0'
+config-version: 2
+
+profile: 'financial_core'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+models:
+  financial_semantic_core:
+    staging:
+      +materialized: view
+      +category: bronze
+    intermediate:
+      +materialized: table
+      +category: silver
+    marts:
+      +materialized: table
+      +category: gold

@@ -1,6 +1,6 @@
 # Financial Data Lifecycle (S10 -> S50)
 
-This repository follows the **Medallion Architecture** to transform raw Dynamics 365 Business Central data into RGS-standardized audit trails.
+This repository follows the **Medallion Architecture** to transform raw Dynamics 365 Business Central data into SAS-standardized audit trails.
 
 
 ## [S10] Staging Layer (Bronze)
@@ -10,10 +10,10 @@ This repository follows the **Medallion Architecture** to transform raw Dynamics
 
 ## [S30] Intermediate Layer (Silver)
 * **Purpose:** The **Standardization Engine**.
-* **Logic:** * **RGS Mapping:** Joins the `gl_entries` with the `seed_rgs_mapping` table.
+* **Logic:** * **SAS Mapping:** Joins the `gl_entries` with the `seed_SAS_mapping` table.
     * **Deduplication:** Handling BC's "Close Income Statement" entries to avoid double-counting.
     * **Currency Normalization:** All amounts converted to EUR based on daily ECB rates.
-* **Constraint:** Every record must have a valid RGS Level 4 reference.
+* **Constraint:** Every record must have a valid SAS Level 4 reference.
 
 ## [S50] Marts Layer (Gold)
 * **Purpose:** Auditor-Ready Data Products.
@@ -28,13 +28,13 @@ This repository follows the **Medallion Architecture** to transform raw Dynamics
     end
 
     subgraph "S30 - Silver (Intermediate)"
-        STG -->|RGS Mapping| RGS[int_rgs_standardization]
-        SEED[(RGS 3.5 Seed)] --> RGS
+        STG -->|SAS Mapping| SAS[int_SAS_standardization]
+        SEED[(SAS 3.5 Seed)] --> SAS
     end
 
     subgraph "S50 - Gold (Marts)"
-        RGS -->|Validation| AUD[fct_auditor_export]
-        RGS -->|Agg| PNL[fct_profit_loss]
+        SAS -->|Validation| AUD[fct_auditor_export]
+        SAS -->|Agg| PNL[fct_profit_loss]
     end
 
     subgraph "Sentinel Integration"

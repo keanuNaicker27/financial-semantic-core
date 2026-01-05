@@ -1,0 +1,28 @@
+# --- dbt Specific ---
+dbt/dbt_packages/
+dbt/logs/
+dbt/target/
+dbt/dbt_modules/
+
+# --- Environment & Secrets ---
+.env
+*.env
+profiles.yml
+secrets.json
+.python-version
+
+# --- OS & IDE ---
+.DS_Store
+.vscode/
+.idea/
+__pycache__/
+*.py[cod]
+
+# --- Terraform (if any local state exists) ---
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# --- Temporary Files ---
+*.log
+*.tmp

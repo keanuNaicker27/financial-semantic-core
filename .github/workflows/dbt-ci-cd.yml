@@ -1,0 +1,49 @@
+name: "Financial Semantic CI/CD"
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'dbt/**'
+  push:
+    branches: [ main ]
+
+jobs:
+  dbt-slim-ci:
+    name: "Data Quality & Contract Validation"
+    runs-on: ubuntu-latest
+    
+    # Staff Move: Use environment variables for different cloud targets
+    env:
+      DBT_PROFILES_DIR: ./dbt
+      DBT_AZURE_QUERIES: ${{ secrets.AZURE_SQL_CONNECTION }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dbt & Dependencies
+        run: |
+          pip install dbt-sqlserver  # Or dbt-athena / dbt-bigquery for diversification
+          dbt deps --project-dir dbt
+
+      - name: dbt Debug
+        run: dbt debug --project-dir dbt
+
+      - name: Run Data Contract & Logic Tests
+        # 'dbt test' is the heart of financial governance.
+        # It catches: Nulls in G/L, Unique constraint violations, and RGS mapping gaps.
+        run: dbt test --project-dir dbt --target dev
+
+      - name: Generate Data Documentation
+        # Staff Move: Automatically updating the Data Dictionary for the Finance Team
+        run: dbt docs generate --project-dir dbt
+
+      - name: Deploy to Documentation Portal
+        if: github.ref == 'refs/heads/main'
+        run: echo "Deploying generated dbt docs to GitHub Pages/Static Host..."

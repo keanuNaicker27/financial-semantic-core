@@ -1,0 +1,23 @@
+{
+    "name": "Trigger_DBT_RGS_Mapping",
+    "properties": {
+        "activities": [
+            {
+                "name": "Run_DBT_Container",
+                "type": "Custom",
+                "description": "Executes dbt-core within an Azure Container Instance",
+                "typeProperties": {
+                    "command": "dbt run --models tag:rgs_standardization",
+                    "resourceLinkedService": {
+                        "referenceName": "AzureContainerRegistry",
+                        "type": "LinkedServiceReference"
+                    }
+                },
+                "linkedServiceName": {
+                    "referenceName": "AzureSqlDatabase",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ]
+    }
+}

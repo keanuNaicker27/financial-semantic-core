@@ -1,0 +1,17 @@
+main:
+  steps:
+    - init:
+        assign:
+          - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+    - run_dbt_job:
+        call: http.post
+        args:
+            url: https://me-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/project/jobs/dbt-rgs-standardization:run
+            auth:
+                type: OAuth2
+        result: job_status
+    - check_status:
+        switch:
+            - condition: ${job_status.status == 200}
+              next: finish
+        next: fail_step

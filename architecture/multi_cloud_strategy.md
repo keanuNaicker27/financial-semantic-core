@@ -23,3 +23,25 @@ To avoid vendor lock-in and high migration costs, this semantic core is designed
 ## Portability Guarantees
 - **SQL Dialect:** We utilize `dbt-utils` cross-database macros to ensure logic runs on T-SQL (Azure) and Postgres/Redshift (AWS) with zero code changes.
 - **Data Contracts:** Every layer is governed by YAML schemas, ensuring that even if the database changes, the **Schema Contract** remains fixed.
+
+## Diagram
+```mermaid
+graph TD
+    subgraph "DBT CORE (The Brain)"
+        DBT[Semantic Models & RGS Mapping]
+    end
+
+    subgraph "Azure Environment"
+        ADF[Azure Data Factory] -->|Triggers| DBT
+        DBT -->|Writes| SQL[(Azure SQL)]
+    end
+
+    subgraph "AWS Environment"
+        GLUE[AWS Glue] -->|Triggers| DBT
+        DBT -->|Writes| ATH[(Athena/S3)]
+    end
+
+    subgraph "GCP Environment"
+        WRK[GCP Workflows] -->|Triggers| DBT
+        DBT -->|Writes| BQ[(BigQuery)]
+    end

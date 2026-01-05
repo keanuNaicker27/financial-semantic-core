@@ -1,0 +1,8 @@
+internal_account_no,rgs_code,rgs_label_nl,rgs_category,rgs_level
+1000,BEveVrdVor,Voorraden,Activa,4
+1100,BEveVrdHan,Handelsgoederen,Activa,4
+2000,BDebDebHan,Debiteuren handelsgoederen,Activa,4
+3000,BCasKas,Kas,Activa,4
+4000,WBedOmzNet,Netto-omzet,Baten,4
+6000,WBedKosGrw,Kostprijs grond- en hulpstoffen,Lasten,4
+7000,WBedLonSal,Lonen en salarissen,Lasten,4

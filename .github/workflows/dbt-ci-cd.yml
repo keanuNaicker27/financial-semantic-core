@@ -41,7 +41,7 @@ jobs:
         run: dbt test --project-dir dbt --target dev
 
       - name: Generate Data Documentation
-        # Staff Move: Automatically updating the Data Dictionary for the Finance Team
+        # Automatically updating the Data Dictionary for the Finance Team
         run: dbt docs generate --project-dir dbt
 
       - name: Deploy to Documentation Portal
